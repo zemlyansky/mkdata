@@ -1,6 +1,6 @@
 {
   "name": "mkdata",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Make synthetic datasets",
   "main": "index.js",
   "bin": {
