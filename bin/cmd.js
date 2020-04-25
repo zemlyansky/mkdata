@@ -20,8 +20,8 @@ const argv = require('minimist')(process.argv.slice(2), {
 const dataset = argv._[0] || argv.dataset
 
 if (Object.keys(make).includes(dataset)) {
-  const [X, y] = make[argv.dataset](argv)
-  let res = X[0].map((_, i) => 'x' + i).join(',')
+  const [X, y] = make[dataset](argv)
+  let res = X[0].map((_, i) => 'x' + (i + 1)).join(',')
   res += y ? ',y' : ''
   res += '\n'
 
@@ -37,6 +37,6 @@ if (Object.keys(make).includes(dataset)) {
     process.stdout.write(res)
   }
 } else {
-  throw new Error('No dataset with a name', argv.dataset)
+  throw new Error('No dataset with a name', dataset)
 }
 // Read

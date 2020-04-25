@@ -59,7 +59,7 @@ function friedman2 (opts) {
       random() * 10 + 1
     ]
     X.push(x)
-    y.push(Math.pow(x[0], 2) + Math.sqrt(Math.pow(x[1] * x[2] - 1 / (x[1] * x[3]))) + options.noise * random())
+    y.push(Math.sqrt(Math.pow(x[0], 2) + Math.pow(x[1] * x[2] - 1 / (x[1] * x[3]), 2)) + options.noise * random())
   }
 
   return [X, y]
