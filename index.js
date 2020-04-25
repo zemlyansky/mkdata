@@ -3,7 +3,8 @@ const Random = require('seedrandom')
 const defaults = {
   nSamples: 100,
   noise: 0,
-  randomState: null
+  randomState: null,
+  X: null // Passing X will generate only a target variable
 }
 
 function initRandom (seed) {
@@ -31,6 +32,7 @@ function friedman1 (opts) {
 
   const X = []
   const y = []
+  const f = (x) => 10 * Math.sin(Math.PI * x[0] * x[1]) + 20 * Math.pow((x[2] - 0.5), 2) + 10 * x[3] + 5 * x[4] + options.noise * random()
 
   for (let ri = 0; ri < options.nSamples; ri++) {
     const x = []
@@ -38,10 +40,10 @@ function friedman1 (opts) {
       x.push(random())
     }
     X.push(x)
-    y.push(10 * Math.sin(Math.PI * x[0] * x[1]) + 20 * Math.pow((x[2] - 0.5), 2) + 10 * x[3] + 5 * x[4] + options.noise * random())
+    y.push(f(x))
   }
 
-  return [X, y]
+  return [X, y, f]
 }
 
 function friedman2 (opts) {
@@ -50,6 +52,7 @@ function friedman2 (opts) {
 
   const X = []
   const y = []
+  const f = (x) => Math.sqrt(Math.pow(x[0], 2) + Math.pow(x[1] * x[2] - 1 / (x[1] * x[3]), 2)) + options.noise * random()
 
   for (let ri = 0; ri < options.nSamples; ri++) {
     const x = [
@@ -59,10 +62,10 @@ function friedman2 (opts) {
       random() * 10 + 1
     ]
     X.push(x)
-    y.push(Math.sqrt(Math.pow(x[0], 2) + Math.pow(x[1] * x[2] - 1 / (x[1] * x[3]), 2)) + options.noise * random())
+    y.push(f(x))
   }
 
-  return [X, y]
+  return [X, y, f]
 }
 
 function friedman3 (opts) {
@@ -71,6 +74,7 @@ function friedman3 (opts) {
 
   const X = []
   const y = []
+  const f = (x) => Math.atan(x[1] * x[2] - 1 / (x[1] * x[3]) / x[0]) + options.noise * random()
 
   for (let ri = 0; ri < options.nSamples; ri++) {
     const x = [
@@ -80,10 +84,10 @@ function friedman3 (opts) {
       random() * 10 + 1
     ]
     X.push(x)
-    y.push(Math.atan(x[1] * x[2] - 1 / (x[1] * x[3]) / x[0]) + options.noise * random())
+    y.push(f(x))
   }
 
-  return [X, y]
+  return [X, y, f]
 }
 
 function hastie (opts) {
@@ -92,19 +96,17 @@ function hastie (opts) {
 
   const X = []
   const y = []
+  const f = (x) => +(x.reduce((a, v) => a + v * v, 0) > 9.34)
 
   for (let ri = 0; ri < options.nSamples; ri++) {
     const x = []
-    let target = 0
     for (let ci = 0; ci < 10; ci++) {
       const n = normal(random)
       x.push(n)
-      target += n * n
     }
     X.push(x)
-    y.push(+(target > 9.34))
+    y.push(f(x))
   }
-
   return [X, y]
 }
 
