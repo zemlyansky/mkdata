@@ -3,8 +3,17 @@ const Random = require('seedrandom')
 const defaults = {
   nSamples: 100,
   noise: 0,
-  randomState: null,
+  seed: null,
   X: null // Passing X will generate only a target variable
+}
+
+function shuffle (X, y) {
+  const n = X.length
+  for (let ri = n - 1; ri > 0; ri--) {
+    const i = Math.floor(Math.random() * (ri + 1))
+    if (X) [X[ri], X[i]] = [X[i], X[ri]]
+    if (y) [y[ri], y[i]] = [y[i], y[ri]]
+  }
 }
 
 function initRandom (seed) {
@@ -112,7 +121,7 @@ function hastie (opts) {
 
 function moons (opts) {
   const datasetDefaults = {
-    shuffle: 10
+    shuffle: true
   }
 
   const options = Object.assign({}, defaults, datasetDefaults, opts)
@@ -144,16 +153,64 @@ function moons (opts) {
   }
 
   if (options.shuffle) {
-    for (let ri = options.nSamples - 1; ri > 0; ri--) {
-      const i = Math.floor(Math.random() * (ri + 1))
-      ;[X[ri], X[i]] = [X[i], X[ri]]
-      ;[y[ri], y[i]] = [y[i], y[ri]]
-    }
+    shuffle(X, y)
   }
 
   return [X, y]
 }
 
+// Peak Benchmark Problem (Regression)
+// Based on mlbench: https://cran.r-project.org/web/packages/mlbench/
+function peak (opts) {
+  const datasetDefaults = {
+    nFeatures: 10
+  }
+  const options = Object.assign({}, defaults, datasetDefaults, opts)
+  const random = initRandom(options.seed)
+
+  const X = []
+  const y = []
+  const f = (radius) => 25 * Math.exp(-0.5 * radius * radius)
+
+  for (let ri = 0; ri < options.nSamples; ri++) {
+    let x = []
+    for (let ci = 0; ci < options.nFeatures; ci++) {
+      x.push(normal(random))
+    }
+    const radius = Math.random() * 3
+    const metro = Math.sqrt(x.reduce((a, v) => a + v * v, 0))
+    x = x.map(v => radius * (v / metro))
+    X.push(x)
+    y.push(f(radius))
+  }
+
+  return [X, y]
+}
+
+// Ringnorm Benchmark Problem (Classification)
+// Based on mlbench: https://cran.r-project.org/web/packages/mlbench/
+// Ref: Breiman, L. (1996).  Bias, variance, and arcing classifiers
+function ringnorm (opts) {
+  const datasetDefaults = {
+    nFeatures: 10
+  }
+
+  const options = Object.assign({}, defaults, datasetDefaults, opts)
+  const random = initRandom(options.seed)
+  const split = options.nSamples / 2
+  const y = Array(Math.floor(split)).fill(0).concat(Array(Math.ceil(split)).fill(1))
+  const a = 1 / Math.sqrt(options.nFeatures)
+  const X = y.map(v => {
+    if (v) {
+      return Array(options.nFeatures).fill(0).map(_ => normal(random) * 2)
+    } else {
+      return Array(options.nFeatures).fill(0).map(_ => normal(random) + a)
+    }
+  })
+
+  return [X, y]
+}
+
 module.exports = {
-  friedman1, friedman2, friedman3, hastie, moons
+  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm
 }
