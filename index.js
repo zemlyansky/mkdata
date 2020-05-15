@@ -29,6 +29,10 @@ function normal (random) {
   return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
 }
 
+function neg (X) {
+  return X.map(row => row.map(v => - v))
+}
+
 function friedman1 (opts) {
   const datasetDefaults = {
     nFeatures: 10
@@ -211,6 +215,47 @@ function ringnorm (opts) {
   return [X, y]
 }
 
+function oneSpiral (n, cycles=1, sd=0, seed) {
+  // const w = Array(n).fill(0).map((_, i) => i * cycles / n)
+  const random = initRandom(seed)
+  const X = Array(n).fill(0).map((_, i) => {
+    const w = i * cycles / n
+    x1 = (2 * w + 1) * Math.cos(2 * Math.PI * w) / 3
+    x2 = (2 * w + 1) * Math.sin(2 * Math.PI * w) / 3
+    if (sd > 0) {
+      const e = normal(random) * sd
+      const xs = Math.cos(2 * Math.PI * w) - Math.PI * (2 * w + 1) * Math.sin(2 * Math.PI * w)
+      const ys = Math.sin(2 * Math.PI * w) + Math.PI * (2 * w + 1) * Math.cos(2 * Math.PI * w)
+      const nrm = Math.sqrt(xs * xs + ys * ys)
+      x1 += e * ys / nrm
+      x2 -= e * xs / nrm
+    }
+    return [x1, x2]
+  })
+  return X
+}
+
+function spirals (opts) {
+  const datasetDefaults = {
+    cycles: 1
+  }
+
+  const options = Object.assign({}, defaults, datasetDefaults, opts)
+  const random = initRandom(options.seed)
+
+  const split = options.nSamples / 2
+  const y = Array(Math.floor(split)).fill(0).concat(Array(Math.ceil(split)).fill(1))
+  const X = oneSpiral(Math.floor(split), options.cycles, options.noise, options.seed)
+    .concat(neg(oneSpiral(Math.ceil(split), options.cycles, options.noise, options.seed)))
+
+  if (options.shuffle) {
+    shuffle(X, y)
+  }
+
+  return [X, y]
+}
+
+
 module.exports = {
-  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm
+  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm, spirals
 }
