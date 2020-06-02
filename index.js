@@ -255,7 +255,31 @@ function spirals (opts) {
   return [X, y]
 }
 
+// Swissroll dataset
+// Based on sklearn implementation of
+// S. Marsland, "Machine Learning: An Algorithmic Perspective" Chapter 10, 2009
+function swissroll (opts) {
+  const options = Object.assign({}, defaults, opts)
+  const random = initRandom(options.seed)
+
+  const X = []
+  const t = []
+
+  for (let ri = 0; ri < options.nSamples; ri++) {
+    const ti = 1.5 * Math.PI * (1 + 2 * random())
+    const x = [
+      ti * Math.cos(ti) + options.noise * random(),
+      21 * random() + options.noise * random(),
+      ti * Math.sin(ti) + options.noise * random()
+    ]
+    X.push(x)
+    t.push(ti)
+  }
+
+  return [X, t]
+}
+
 
 module.exports = {
-  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm, spirals
+  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm, spirals, swissroll
 }
