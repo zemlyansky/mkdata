@@ -46,3 +46,6 @@ const yt = X.map(f)
 - Ringnorm (from [Breiman 1996](http://docs.salford-systems.com/BIAS_VARIANCE_ARCING.pdf))
 - Spirals (two entangled spirals)
 - Swissroll (from S. Marsland 2009)
+
+### Web demo
+Generate same synthetic datasets without installing `mkdata` here: [https://statsim.com/gen/](https://statsim.com/gen/) (CSV format)
