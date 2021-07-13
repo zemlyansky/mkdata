@@ -1,6 +1,6 @@
 {
   "name": "mkdata",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Make synthetic datasets",
   "main": "index.js",
   "bin": {
@@ -11,8 +11,12 @@
   },
   "keywords": [
     "datasets",
-    "ml",
-    "generator"
+    "ML",
+    "generator",
+    "machinelearning",
+    "data",
+    "synthetic-data",
+    "CLI"
   ],
   "author": "Anton Zemlyansky",
   "license": "MIT",
