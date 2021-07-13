@@ -1,7 +1,9 @@
 # Generate synthetic datasets for machine learning
 
 ### Open-source data generator working in terminal and as a JavaScript module
+
 Using synthetic datasets is the easiest and the most robust way to test machine learning models and statistical methods. Instead of relying on real-world data with not fully known dependencies between variables, artificial data has clear rules under the hood. Another benefit is there's almost no size limit. We can generate as many observations as we need for our purposes. 
+
 With `mkdata`, you can generate new data based on ten well-known problems (e.g. Friedman datasets). You can use it as a JavaScript module producing 2D arrays ready for model training. Or create CSV files calling `mkdata` as a CLI app without writing code at all.
 
 ### Install mkdata
