@@ -279,7 +279,38 @@ function swissroll (opts) {
   return [X, t]
 }
 
+function randomwalk (opts) {
+  const datasetDefaults = {
+    nFeatures: 2,
+    mu: 0,
+    std: 1,
+    start: 0
+  }
+
+  const options = Object.assign({}, defaults, datasetDefaults, opts)
+
+  ;['mu', 'std', 'start'].forEach(pn => {
+    if (!Array.isArray(options[pn])) {
+      options[pn] = Array(options.nFeatures).fill(options[pn])
+    } 
+  })
+
+  const random = initRandom(options.seed)
+
+  const X = []
+
+  let x = options.start.slice(0)
+  for (let ri = 0; ri < options.nSamples; ri++) {
+    for (let ci = 0; ci < options.nFeatures; ci++) {
+      x[ci] += normal(random) * options.std[ci] + options.mu[ci]
+    }
+    X.push(x.slice(0))
+  }
+
+  return [X]
+}
+
 
 module.exports = {
-  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm, spirals, swissroll
+  friedman1, friedman2, friedman3, hastie, moons, peak, ringnorm, spirals, swissroll, randomwalk
 }

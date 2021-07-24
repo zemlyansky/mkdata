@@ -9,7 +9,7 @@ With `mkdata`, you can generate new data based on nine well-known problems (e.g.
 ### Install mkdata
 - `npm i mkdata -S` or
 - `npm i mkdata -g` or run using `npx` without installation
-- `npx mkdata -d moons -s 1000 -o friedman1.csv`
+- `npx mkdata -d friedman1 -s 1000 -o friedman1.csv`
 
 ### CLI
 ```
@@ -21,7 +21,7 @@ mkdata -d friedman1 -s 1000 > friedman1.csv
 ```
 
 Params:
-- `-d`, `--dataset` - dataset name
+- `-d`, `--dataset` - dataset name (full list below)
 - `-f`, `--nFeatures` - number of features
 - `-s`, `--nSamples` - number of samples
 - `-n`, `--noise` - noise size
@@ -41,15 +41,19 @@ const yt = X.map(f)
 ```
 
 ### Synthetic datasets
-- Friedman 1 (`y = 10 * sin(Pi * x1 * x2) + 20 * (x3 - 0.5) ** 2 + 10 * x4 + 5 * x5 + e`)
-- Friedman 2 (`y = sqrt(x1 ** 2 + (x2 * x3 - 1 / (x2 * x4)) ** 2) + e`)
-- Friedman 3 (`y = atan(x2 * x3 - 1 / (x2 * x4) / x1) + e`)
-- Hastie (binary classification problem used in [Hastie et al 2009](https://web.stanford.edu/~hastie/Papers/ESLII.pdf))
-- Moons (two interleaving half circles)
-- Peak (peak benchmark problem)
-- Ringnorm (from [Breiman 1996](http://docs.salford-systems.com/BIAS_VARIANCE_ARCING.pdf))
-- Spirals (two entangled spirals)
-- Swissroll (from S. Marsland 2009)
+- Friedman 1 `friedman1` (`y = 10 * sin(Pi * x1 * x2) + 20 * (x3 - 0.5) ** 2 + 10 * x4 + 5 * x5 + e`)
+- Friedman 2 `friedman2` (`y = sqrt(x1 ** 2 + (x2 * x3 - 1 / (x2 * x4)) ** 2) + e`)
+- Friedman 3 `friedman3` (`y = atan(x2 * x3 - 1 / (x2 * x4) / x1) + e`)
+- Hastie `hastie` (binary classification problem used in [Hastie et al 2009](https://web.stanford.edu/~hastie/Papers/ESLII.pdf))
+- Moons `moons` (two interleaving half circles)
+- Peak `peak` (peak benchmark problem)
+- Ringnorm `ringnorm` (from [Breiman 1996](http://docs.salford-systems.com/BIAS_VARIANCE_ARCING.pdf))
+- Spirals `spirals` (two entangled spirals)
+- Swissroll `swissroll` (from S. Marsland 2009)
+- Random walk `randomwalk` ([Wiki](https://en.m.wikipedia.org/wiki/Random_walk)). Extra parameters can be provided as numbers (same for all generated random walks), or arrays containing individual parameters per walk: 
+  - `mu` - mean of the increment (default: `0`) 
+  - `std` - standard deviation of the increment (default: `1`)
+  - `start` - start point (default: `0`)
 
 ### Web demo
-Generate same synthetic datasets without installing `mkdata` here: [https://statsim.com/gen/](https://statsim.com/gen/) (CSV format)
+Generate same synthetic datasets without installing `mkdata` using [StatSim Gen](https://statsim.com/gen/) (CSV format)
